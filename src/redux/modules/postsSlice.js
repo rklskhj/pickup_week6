@@ -29,7 +29,6 @@ export const __getPosts = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { data } = await Api.get("/posts");
-      console.log(typeof data.travel);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -67,7 +66,6 @@ export const __deletePosts = createAsyncThunk(
 export const __detailPosts = createAsyncThunk(
   "posts/detailPosts",
   async (postId, thunkAPI) => {
-    console.log("thunk", postId);
     try {
       await Api.get(`/posts/${postId}`);
       return thunkAPI.fulfillWithValue(postId);

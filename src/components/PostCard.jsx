@@ -14,14 +14,14 @@ const PostCard = ({ post }) => {
 
 
     const onEditHandler = () => {
-        dispatch(__editPosts({ id: post.id, completion: !post.completion }))
+        dispatch(__editPosts({ id: post?.id, completion: !post?.completion }))
     }
 
 
     const onDetailPage = () => {
         dispatch(__detailPosts({ postId: post.postId }))
         navigate(`/my_detail/${post.postId}`)
-        console.log("postId1", post.postId)
+
     }
 
     return (
@@ -125,15 +125,3 @@ const BtnBox = styled.div`
 
 
 
-
-
-
-// import React from 'react'
-
-// const PostCard = () => {
-//     return (
-//         <div>PostCard</div>
-//     )
-// }
-
-// export default PostCard

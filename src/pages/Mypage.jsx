@@ -32,11 +32,11 @@ const Mypage = () => {
                 <Categorie />
                 <Container>
                     <ListWrapper>
-                        {posts.filter(post => !post.completion).map(post => <PostCard key={post.id} post={post} />)}
+                        {posts.filter(post => !post.completion).map(post => <PostCard key={post?.id} post={post} />)}
                     </ListWrapper>
                     <ListLine />
                     <ListWrapper>
-                        {posts.filter(post => post.completion).map(post => <PostCard key={post.id} post={post} />)}
+                        {posts.filter(post => post.completion).map(post => <PostCard key={post?.id} post={post} />)}
                     </ListWrapper>
                 </Container>
                 <Footer />
