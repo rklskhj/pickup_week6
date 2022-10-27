@@ -14,6 +14,7 @@ import styled from 'styled-components'
 import Swal from 'sweetalert2'
 import CategorieInfo from '../components/CategorieInfo'
 import { __sharePost } from '../redux/modules/sharingsSlice'
+import { getCookieToken } from '../shared/cookie'
 
 // import { __getCheckList } from '../redux/modules/checkListSlice'
 
@@ -25,8 +26,10 @@ const MypageDetail = () => {
 
     const { id } = useParams();
     const { posts } = useSelector((state) => state.posts);
-    const post = posts.find((post) => post.id === +id)
+    console.log("posts", posts)
+    const post = posts.find((post) => post?.postId === +id)
     console.log("po", post)
+    const cookie = getCookieToken('AccessToken')
 
     const [isEdit, setIsEdit] = useState(false)
     const [editPost, setEditPost] = useState({
@@ -38,9 +41,22 @@ const MypageDetail = () => {
         dispatch(__getPosts())
     }, [dispatch])
 
+    // useEffect(() => {
+    //     dispatch(__detailPosts(+id));
+    // }, [dispatch, id])
+
     useEffect(() => {
-        dispatch(__detailPosts(+id));
-    }, [dispatch, id])
+        if (!cookie) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: '로그인을 해주세요!',
+                showConfirmButton: false,
+                timer: 1000
+            })
+            navigate("/login");
+        }
+    }, [cookie, navigate]);
 
 
     const onDeleteHandler = (e) => {
@@ -76,7 +92,7 @@ const MypageDetail = () => {
             })
         }
         if (editPost.title.trim() === "") return;
-        dispatch(__editPosts({ ...post, ...editPost }))
+        dispatch(__editPosts({ ...editPost }))
         setIsEdit(false)
     }
 
@@ -92,7 +108,7 @@ const MypageDetail = () => {
             confirmButtonText: 'Share'
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(__sharePost({ postId: post.id }))
+                dispatch(__sharePost({ postId: +id }))
                 Swal.fire(
                     '공유 완료!',
                     '게시글이 공유 되었어요!',
@@ -132,7 +148,7 @@ const MypageDetail = () => {
                                 {!isEdit ? <div><h1>{post?.title}</h1></div> : null}
                                 {isEdit ?
                                     <div>
-                                        <input type="text" value={editPost.title} onChange={(e) => { setEditPost({ ...editPost, title: e.target.value }) }} />
+                                        <input type="text" value={editPost?.title} onChange={(e) => { setEditPost({ ...editPost, title: e.target.value }) }} />
                                         <Button size="size1" onClick={onEditHandler} >저장</Button>
                                     </div>
                                     : null}
@@ -210,7 +226,6 @@ const CheckListWrap = styled.div`
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     /* background-color: #293991; */
-    
 `
 
 
