@@ -93,4 +93,3 @@ const HeaderBar = styled.div`
     align-items: center;
     gap: 2rem;
 `
-
