@@ -55,4 +55,3 @@ const SubHeader = styled.div`
     }
     `
 
-
